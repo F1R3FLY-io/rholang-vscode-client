@@ -1,0 +1,79 @@
+{
+    "name": "rholang",
+    "displayName": "Rholang",
+    "description": "Language support for Rholang.",
+    "version": "0.0.1",
+    "publisher": "F1R3FLY-io",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/F1R3FLY-io/lfortran-vscode-client"
+    },
+    "engines": {
+        "vscode": "^1.99.1"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "activationEvents": [
+        "onLanguage:rholang"
+    ],
+    "main": "./out/extension.bundle.js",
+    "contributes": {
+        "languages": [
+            {
+                "id": "rholang",
+                "aliases": [
+                ],
+                "extensions": [
+                    ".rho"
+                ],
+                "configuration": "./language-configuration.json"
+            }
+        ],
+        "grammars": [
+            {
+                "language": "rholang",
+                "scopeName": "source.rholang",
+                "path": "./syntaxes/rholang.tmLanguage.json"
+            }
+        ],
+        "configuration": {
+            "title": "Rholang",
+            "properties": {
+                "rholang.server.path": {
+                    "type": "string",
+                    "default": "rholang-language-server",
+                    "description": "Path to the rholang-language-server executable."
+                },
+                "rholang.trace.server": {
+                    "scope": "window",
+                    "type": "string",
+                    "enum": [
+                        "off",
+                        "messages",
+                        "verbose"
+                    ],
+                    "default": "off",
+                    "description": "Traces communication between the language client and server."
+                }
+            }
+        }
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run build",
+        "build": "tsc -p ./ && esbuild out/extension.js --bundle --outfile=out/extension.bundle.js --platform=node --format=cjs --external:vscode",
+        "compile": "npm run build",
+        "watch": "tsc -watch -p ./"
+    },
+    "dependencies": {
+        "@types/which": "^3.0.4",
+        "vscode-languageclient": "^9.0.1"
+    },
+    "devDependencies": {
+        "@types/node": "^22.15.2",
+        "@types/vscode": "^1.99.1",
+        "@vscode/vsce": "^3.3.2",
+        "esbuild": "^0.25.3",
+        "typescript": "^5.8.3"
+    }
+}
