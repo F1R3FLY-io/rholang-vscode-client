@@ -47,7 +47,9 @@ export async function activate(context: vscode.ExtensionContext) {
     if (!!serverPath && await isExecutable(serverPath)) {
         const serverOptions: ServerOptions = {
             command: serverPath,
-            args: [],
+            args: [
+              "--no-color",  // Disable ANSI color escape codes
+            ],
             transport: TransportKind.stdio
         };
 
