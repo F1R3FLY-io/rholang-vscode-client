@@ -2,7 +2,7 @@
     "name": "f1r3fly-io-rholang",
     "displayName": "Rholang (F1R3FLY.io)",
     "description": "Language support for Rholang.",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "publisher": "F1R3FLY-io",
     "icon": "images/f1r3fly-io-logo.png",
     "repository": {
@@ -10,7 +10,7 @@
         "url": "https://github.com/F1R3FLY-io/rholang-vscode-client"
     },
     "engines": {
-        "vscode": "^1.99.1"
+        "vscode": "^1.96.2"
     },
     "categories": [
         "Programming Languages"
@@ -72,7 +72,7 @@
     },
     "devDependencies": {
         "@types/node": "^22.15.2",
-        "@types/vscode": "^1.99.1",
+        "@types/vscode": "^1.96.2",
         "@vscode/vsce": "^3.3.2",
         "esbuild": "^0.25.3",
         "typescript": "^5.8.3"
