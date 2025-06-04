@@ -1,7 +1,6 @@
 "use strict";
 
 import fs from 'fs';
-
 import * as vscode from "vscode";
 import {
     LanguageClient,
@@ -9,7 +8,6 @@ import {
     ServerOptions,
     TransportKind
 } from 'vscode-languageclient/node';
-
 import which from "which";
 
 let client: LanguageClient;
@@ -48,7 +46,8 @@ export async function activate(context: vscode.ExtensionContext) {
         const serverOptions: ServerOptions = {
             command: serverPath,
             args: [
-              "--no-color",  // Disable ANSI color escape codes
+                "--no-color",  // Disable ANSI color escape codes
+                "--client-process-id", process.pid.toString()
             ],
             transport: TransportKind.stdio
         };
