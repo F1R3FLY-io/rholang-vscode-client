@@ -2,7 +2,7 @@
     "name": "f1r3fly-io-rholang",
     "displayName": "Rholang (F1R3FLY.io)",
     "description": "Language support for Rholang.",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "publisher": "F1R3FLY-io",
     "icon": "images/f1r3fly-io-logo.png",
     "repository": {
@@ -45,6 +45,24 @@
                     "type": "string",
                     "default": "rholang-language-server",
                     "description": "Path to the rholang-language-server executable."
+                },
+                "rholang.validatorBackend": {
+                    "type": "string",
+                    "default": "rust",
+                    "enum": [
+                        "rust",
+                        "grpc"
+                    ],
+                    "enumDescriptions": [
+                        "Use the embedded Rust interpreter for fast semantic validation",
+                        "Use gRPC to connect to a legacy RNode server (requires custom address configuration)"
+                    ],
+                    "description": "Validator backend to use for semantic analysis. 'rust' uses the embedded interpreter, 'grpc' connects to a legacy RNode server."
+                },
+                "rholang.grpcAddress": {
+                    "type": "string",
+                    "default": "localhost:40402",
+                    "description": "Address of the RNode gRPC server when using the 'grpc' validator backend (format: 'host:port')."
                 },
                 "rholang.trace.server": {
                     "scope": "window",

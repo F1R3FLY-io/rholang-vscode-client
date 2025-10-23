@@ -43,13 +43,38 @@ export async function activate(context: vscode.ExtensionContext) {
     }
 
     if (!!serverPath && await isExecutable(serverPath)) {
+        // Read configuration for validator backend
+        const config = vscode.workspace.getConfiguration('rholang');
+        let validatorBackend: string = config.get<string>('validatorBackend') ?? 'rust';
+        let grpcAddress: string = config.get<string>('grpcAddress') ?? 'localhost:40402';
+
+        logger.debug(`Validator backend: ${validatorBackend}`);
+
+        const args: string[] = [
+            "--no-color",  // Disable ANSI color escape codes
+            "--client-process-id", process.pid.toString()
+        ];
+
+        // Add validator backend configuration
+        if (validatorBackend === 'rust') {
+            args.push("--validator-backend", "rust");
+        } else if (validatorBackend === 'grpc') {
+            args.push("--validator-backend", `grpc:${grpcAddress}`);
+            logger.debug(`Using gRPC validator at ${grpcAddress}`);
+        } else {
+            logger.warn(`Unknown validator backend '${validatorBackend}', defaulting to 'rust'`);
+            args.push("--validator-backend", "rust");
+        }
+
         const serverOptions: ServerOptions = {
             command: serverPath,
-            args: [
-                "--no-color",  // Disable ANSI color escape codes
-                "--client-process-id", process.pid.toString()
-            ],
-            transport: TransportKind.stdio
+            args: args,
+            transport: TransportKind.stdio,
+            options: {
+                env: {
+                    RUST_BACKTRACE: '1'
+                }
+            }
         };
 
         const clientOptions: LanguageClientOptions = {
