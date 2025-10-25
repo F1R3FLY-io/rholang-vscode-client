@@ -5,6 +5,7 @@
     "version": "0.0.4",
     "publisher": "F1R3FLY-io",
     "icon": "images/f1r3fly-io-logo.png",
+    "license": "Apache-2.0",
     "repository": {
         "type": "git",
         "url": "https://github.com/F1R3FLY-io/rholang-vscode-client"
@@ -63,6 +64,16 @@
                     "type": "string",
                     "default": "localhost:40402",
                     "description": "Address of the RNode gRPC server when using the 'grpc' validator backend (format: 'host:port')."
+                },
+                "rholang.rnode.path": {
+                    "type": "string",
+                    "default": "rnode",
+                    "description": "Path to the rnode executable. Defaults to 'rnode' (searches PATH)."
+                },
+                "rholang.rnode.autoStart": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Automatically start RNode in standalone mode when using gRPC validator backend (if rnode is available)."
                 },
                 "rholang.trace.server": {
                     "scope": "window",
