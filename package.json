@@ -2,7 +2,7 @@
     "name": "f1r3fly-io-rholang",
     "displayName": "Rholang (F1R3FLY.io)",
     "description": "Language support for Rholang.",
-    "version": "0.0.4",
+    "version": "0.1.0",
     "publisher": "F1R3FLY-io",
     "icon": "images/f1r3fly-io-logo.png",
     "license": "Apache-2.0",
@@ -39,6 +39,39 @@
                 "path": "./syntaxes/rholang.tmLanguage.json"
             }
         ],
+        "commands": [
+            {
+                "command": "rholang.restartServer",
+                "title": "Restart Language Server",
+                "category": "Rholang"
+            },
+            {
+                "command": "rholang.showServerMenu",
+                "title": "Show Server Menu",
+                "category": "Rholang"
+            },
+            {
+                "command": "rholang.showServerOutput",
+                "title": "Show Server Output",
+                "category": "Rholang"
+            },
+            {
+                "command": "rholang.toggleWireLog",
+                "title": "Toggle Wire Logging",
+                "category": "Rholang"
+            },
+            {
+                "command": "rholang.showServerInfo",
+                "title": "Show Server Information",
+                "category": "Rholang"
+            }
+        ],
+        "snippets": [
+            {
+                "language": "rholang",
+                "path": "./snippets/rholang.json"
+            }
+        ],
         "configuration": {
             "title": "Rholang",
             "properties": {
@@ -46,6 +79,14 @@
                     "type": "string",
                     "default": "rholang-language-server",
                     "description": "Path to the rholang-language-server executable."
+                },
+                "rholang.server.extraArgs": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "default": [],
+                    "markdownDescription": "Additional command-line arguments to pass to the language server. Arguments can be flags (e.g., `\"--verbose\"`) or options with values (e.g., `\"--max-threads\"`, `\"4\"`). Changes require restarting the language server.\n\n**Example:** `[\"--max-threads\", \"4\", \"--enable-experimental\"]`"
                 },
                 "rholang.validatorBackend": {
                     "type": "string",
@@ -75,6 +116,30 @@
                     "default": true,
                     "description": "Automatically start RNode in standalone mode when using gRPC validator backend (if rnode is available)."
                 },
+                "rholang.server.logLevel": {
+                    "type": "string",
+                    "default": "info",
+                    "enum": [
+                        "error",
+                        "warn",
+                        "info",
+                        "debug",
+                        "trace"
+                    ],
+                    "enumDescriptions": [
+                        "Only log errors",
+                        "Log warnings and errors",
+                        "Log informational messages, warnings, and errors",
+                        "Log debug information and above",
+                        "Log all messages including trace-level details"
+                    ],
+                    "description": "Log level for the Rholang language server. Changes take effect immediately."
+                },
+                "rholang.server.wireLog": {
+                    "type": "boolean",
+                    "default": false,
+                    "markdownDescription": "Enable wire-level logging of LSP protocol messages (inputs and outputs between client and server). This passes `--wire-log` to the language server. Useful for debugging LSP communication issues. **Note:** Changes require restarting the language server."
+                },
                 "rholang.trace.server": {
                     "scope": "window",
                     "type": "string",
@@ -85,6 +150,21 @@
                     ],
                     "default": "off",
                     "description": "Traces communication between the language client and server."
+                },
+                "rholang.completion.forceIncomplete": {
+                    "type": "boolean",
+                    "default": true,
+                    "markdownDescription": "Force completion lists to be marked as incomplete, triggering re-queries on each keystroke. This maximizes reliance on the LSP server's filtering and ranking. **Note:** VSCode still applies client-side prefix matching even with this enabled."
+                },
+                "rholang.completion.preserveSortText": {
+                    "type": "boolean",
+                    "default": true,
+                    "markdownDescription": "Ensure `sortText` is set on completion items to preserve server-side ordering. When enabled, items without `sortText` will use their label as the sort key. **Note:** VSCode overrides this once you start typing."
+                },
+                "rholang.completion.ensureFilterText": {
+                    "type": "boolean",
+                    "default": true,
+                    "markdownDescription": "Ensure `filterText` is set on completion items to control VSCode's client-side filtering. When enabled, items without `filterText` will use their label as the filter key."
                 }
             }
         }
@@ -93,17 +173,26 @@
         "vscode:prepublish": "npm run build",
         "build": "tsc -p ./ && esbuild out/extension.js --bundle --outfile=out/extension.bundle.js --platform=node --format=cjs --external:vscode",
         "compile": "npm run build",
-        "watch": "tsc -watch -p ./"
+        "watch": "tsc -watch -p ./",
+        "pretest": "npm run compile",
+        "test": "node ./out/test/runTest.js",
+        "lint": "eslint src --ext ts"
     },
     "dependencies": {
         "@types/which": "^3.0.4",
         "vscode-languageclient": "^9.0.1"
     },
     "devDependencies": {
+        "@types/mocha": "^10.0.10",
         "@types/node": "^22.15.2",
         "@types/vscode": "^1.96.2",
+        "@vscode/test-electron": "^2.4.1",
         "@vscode/vsce": "^3.3.2",
+        "@typescript-eslint/eslint-plugin": "^8.18.0",
+        "@typescript-eslint/parser": "^8.18.0",
         "esbuild": "^0.25.3",
+        "eslint": "^9.17.0",
+        "mocha": "^10.8.2",
         "typescript": "^5.8.3"
     }
 }
