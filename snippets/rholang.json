@@ -1,0 +1,473 @@
+{
+  "Contract Definition": {
+    "prefix": "contract",
+    "body": [
+      "contract ${1:name}(@${2:param}) = {",
+      "\t$0",
+      "}"
+    ],
+    "description": "Define a contract that receives messages"
+  },
+  "New Channel": {
+    "prefix": "new",
+    "body": [
+      "new ${1:channel} in {",
+      "\t$0",
+      "}"
+    ],
+    "description": "Create a new private channel"
+  },
+  "For Comprehension": {
+    "prefix": "for",
+    "body": [
+      "for(@${1:pattern} <- ${2:channel}) {",
+      "\t$0",
+      "}"
+    ],
+    "description": "Input guard (for comprehension)"
+  },
+  "Persistent For": {
+    "prefix": "for!",
+    "body": [
+      "for(@${1:pattern} <= ${2:channel}) {",
+      "\t$0",
+      "}"
+    ],
+    "description": "Persistent input guard"
+  },
+  "Send on Channel": {
+    "prefix": "send",
+    "body": [
+      "${1:channel}!(${2:data})"
+    ],
+    "description": "Send data on a channel"
+  },
+  "Parallel Composition": {
+    "prefix": "par",
+    "body": [
+      "${1:process1} |",
+      "${2:process2}"
+    ],
+    "description": "Parallel composition of processes"
+  },
+  "Match Expression": {
+    "prefix": "match",
+    "body": [
+      "match ${1:value} {",
+      "\t${2:pattern} => {",
+      "\t\t$0",
+      "\t}",
+      "}"
+    ],
+    "description": "Pattern matching"
+  },
+  "Bundle Read": {
+    "prefix": "bundle-",
+    "body": [
+      "bundle- { ${1:channel} }"
+    ],
+    "description": "Bundle with read-only access"
+  },
+  "Bundle Write": {
+    "prefix": "bundle+",
+    "body": [
+      "bundle+ { ${1:channel} }"
+    ],
+    "description": "Bundle with write-only access"
+  },
+  "Bundle Equivalent": {
+    "prefix": "bundle0",
+    "body": [
+      "bundle0 { ${1:channel} }"
+    ],
+    "description": "Bundle with equivalence (no read/write)"
+  },
+  "Stdout": {
+    "prefix": "stdout",
+    "body": [
+      "stdout!(${1:message})"
+    ],
+    "description": "Print to standard output"
+  },
+  "Method Call": {
+    "prefix": "method",
+    "body": [
+      "${1:object}.${2:method}(${3:args})"
+    ],
+    "description": "Call a method on an object"
+  },
+  "List Literal": {
+    "prefix": "list",
+    "body": [
+      "[${1:item1}, ${2:item2}]"
+    ],
+    "description": "Create a list"
+  },
+  "Map Literal": {
+    "prefix": "map",
+    "body": [
+      "{${1:key1}: ${2:value1}, ${3:key2}: ${4:value2}}"
+    ],
+    "description": "Create a map"
+  },
+  "Set Literal": {
+    "prefix": "set",
+    "body": [
+      "Set(${1:item1}, ${2:item2})"
+    ],
+    "description": "Create a set"
+  },
+  "Tuple": {
+    "prefix": "tuple",
+    "body": [
+      "(${1:item1}, ${2:item2})"
+    ],
+    "description": "Create a tuple"
+  },
+  "If-Else": {
+    "prefix": "if",
+    "body": [
+      "if (${1:condition}) {",
+      "\t${2:// true branch}",
+      "} else {",
+      "\t${3:// false branch}",
+      "}"
+    ],
+    "description": "Conditional expression"
+  },
+  "Unforgeable Name": {
+    "prefix": "unforgeable",
+    "body": [
+      "new ${1:name} in {",
+      "\t// ${1:name} is unforgeable",
+      "\t$0",
+      "}"
+    ],
+    "description": "Create an unforgeable name"
+  },
+  "Registry Insert": {
+    "prefix": "registry.insert",
+    "body": [
+      "new ${1:uriCh}, ${2:valueCh} in {",
+      "\tregistry!\\`rho:registry:insertArbitrary\\`, *${1:uriCh}, *${2:valueCh} |",
+      "\tfor(@uri <- ${1:uriCh}) {",
+      "\t\t${2:valueCh}!(${3:value}) |",
+      "\t\t$0",
+      "\t}",
+      "}"
+    ],
+    "description": "Insert a value into the registry"
+  },
+  "Registry Lookup": {
+    "prefix": "registry.lookup",
+    "body": [
+      "new ${1:resultCh} in {",
+      "\tregistry!\\`rho:registry:lookup\\`, \\`${2:uri}\\`, *${1:resultCh} |",
+      "\tfor(@${3:value} <- ${1:resultCh}) {",
+      "\t\t$0",
+      "\t}",
+      "}"
+    ],
+    "description": "Lookup a value in the registry"
+  },
+  "Acknowledgement Channel": {
+    "prefix": "ack",
+    "body": [
+      "new ${1:ack} in {",
+      "\t${2:channel}!(${3:data}, *${1:ack}) |",
+      "\tfor(_ <- ${1:ack}) {",
+      "\t\t$0",
+      "\t}",
+      "}"
+    ],
+    "description": "Send with acknowledgement pattern"
+  },
+  "Contract with Multiple Parameters": {
+    "prefix": "contract-multi",
+    "body": [
+      "contract ${1:name}(@${2:param1}, @${3:param2}) = {",
+      "\t$0",
+      "}"
+    ],
+    "description": "Contract with multiple parameters"
+  },
+  "Select Expression": {
+    "prefix": "select",
+    "body": [
+      "select {",
+      "\t${1:@pattern1} <- ${2:channel1} => {",
+      "\t\t${3:// branch 1}",
+      "\t}",
+      "\t${4:@pattern2} <- ${5:channel2} => {",
+      "\t\t${6:// branch 2}",
+      "\t}",
+      "}"
+    ],
+    "description": "Select (choice) expression - race between multiple channels"
+  },
+  "Let Expression": {
+    "prefix": "let",
+    "body": [
+      "let ${1:name} = ${2:value} in {",
+      "\t$0",
+      "}"
+    ],
+    "description": "Let binding (single declaration)"
+  },
+  "Let Multiple": {
+    "prefix": "let-multi",
+    "body": [
+      "let ${1:name1} = ${2:value1}; ${3:name2} = ${4:value2} in {",
+      "\t$0",
+      "}"
+    ],
+    "description": "Let with multiple sequential bindings"
+  },
+  "Eval (Dereference)": {
+    "prefix": "eval",
+    "body": [
+      "*${1:channel}"
+    ],
+    "description": "Dereference a channel (eval operator)"
+  },
+  "Quote Process": {
+    "prefix": "quote",
+    "body": [
+      "@{${1:process}}"
+    ],
+    "description": "Quote a process as a name"
+  },
+  "Nil Process": {
+    "prefix": "nil",
+    "body": [
+      "Nil"
+    ],
+    "description": "Empty/null process"
+  },
+  "Peek Bind": {
+    "prefix": "peek",
+    "body": [
+      "for(@${1:pattern} <<- ${2:channel}) {",
+      "\t$0",
+      "}"
+    ],
+    "description": "Peek bind (non-consuming read)"
+  },
+  "Var Ref (Value)": {
+    "prefix": "varref",
+    "body": [
+      "=${1:variable}"
+    ],
+    "description": "Variable reference by value"
+  },
+  "Var Ref (Pointer)": {
+    "prefix": "varref*",
+    "body": [
+      "=*${1:variable}"
+    ],
+    "description": "Variable reference by pointer"
+  },
+  "Synchronous Send": {
+    "prefix": "send-sync",
+    "body": [
+      "${1:channel}!?(${2:data}); ${3:continuation}"
+    ],
+    "description": "Synchronous send with continuation"
+  },
+  "Multiple Send": {
+    "prefix": "send-multi",
+    "body": [
+      "${1:channel}!!(${2:data1}, ${3:data2})"
+    ],
+    "description": "Send multiple values on a channel"
+  },
+  "Receive-Send Source": {
+    "prefix": "for-rs",
+    "body": [
+      "for(@${1:pattern} <- ${2:channel}?!) {",
+      "\t$0",
+      "}"
+    ],
+    "description": "For with receive-send source"
+  },
+  "New with URI": {
+    "prefix": "new-uri",
+    "body": [
+      "new ${1:name}(\\`${2:rho:uri}\\`) in {",
+      "\t$0",
+      "}"
+    ],
+    "description": "Create new channel with named URI"
+  },
+  "StdoutAck": {
+    "prefix": "stdoutAck",
+    "body": [
+      "new ack in {",
+      "\tstdoutAck!(${1:message}, *ack) |",
+      "\tfor(_ <- ack) {",
+      "\t\t$0",
+      "\t}",
+      "}"
+    ],
+    "description": "Print to stdout with acknowledgement"
+  },
+  "Contract with Return Channel": {
+    "prefix": "contract-ret",
+    "body": [
+      "contract ${1:name}(@${2:param}, return) = {",
+      "\t${3:// process}",
+      "\treturn!(${4:result})",
+      "}"
+    ],
+    "description": "Contract with return channel (continuation-passing)"
+  },
+  "For Multiple Binds": {
+    "prefix": "for-multi",
+    "body": [
+      "for(@${1:pattern1} <- ${2:channel1}; @${3:pattern2} <- ${4:channel2}) {",
+      "\t$0",
+      "}"
+    ],
+    "description": "For comprehension with multiple binds"
+  },
+  "Conjunction Pattern": {
+    "prefix": "pattern-and",
+    "body": [
+      "{${1:pattern1} /\\\\ ${2:pattern2}}"
+    ],
+    "description": "Pattern matching with conjunction (AND)"
+  },
+  "Disjunction Pattern": {
+    "prefix": "pattern-or",
+    "body": [
+      "{${1:pattern1} \\\\/ ${2:pattern2}}"
+    ],
+    "description": "Pattern matching with disjunction (OR)"
+  },
+  "Record Pattern": {
+    "prefix": "pattern-record",
+    "body": [
+      "@{@\"${1:field}\"!(${2:value}) | _}"
+    ],
+    "description": "Record/map pattern matching"
+  },
+  "PathMap": {
+    "prefix": "pathmap",
+    "body": [
+      "{| \"${1:path:1}\", \"${2:path:2}\" |}"
+    ],
+    "description": "Create a pathmap"
+  },
+  "Bundle Read-Write": {
+    "prefix": "bundle-rw",
+    "body": [
+      "bundle { ${1:channel} }"
+    ],
+    "description": "Bundle with both read and write access"
+  },
+  "List nth": {
+    "prefix": "list.nth",
+    "body": [
+      "${1:list}.nth(${2:index})"
+    ],
+    "description": "Get element at index from list"
+  },
+  "List slice": {
+    "prefix": "list.slice",
+    "body": [
+      "${1:list}.slice(${2:start}, ${3:end})"
+    ],
+    "description": "Slice list from start to end (exclusive)"
+  },
+  "List length": {
+    "prefix": "list.length",
+    "body": [
+      "${1:list}.length()"
+    ],
+    "description": "Get length of list"
+  },
+  "Map get": {
+    "prefix": "map.get",
+    "body": [
+      "${1:map}.get(${2:key})"
+    ],
+    "description": "Get value from map by key"
+  },
+  "Map getOrElse": {
+    "prefix": "map.getOrElse",
+    "body": [
+      "${1:map}.getOrElse(${2:key}, ${3:default})"
+    ],
+    "description": "Get value from map with default"
+  },
+  "Map set": {
+    "prefix": "map.set",
+    "body": [
+      "${1:map}.set(${2:key}, ${3:value})"
+    ],
+    "description": "Set key-value pair in map (returns new map)"
+  },
+  "Map contains": {
+    "prefix": "map.contains",
+    "body": [
+      "${1:map}.contains(${2:key})"
+    ],
+    "description": "Check if map contains key"
+  },
+  "Map keys": {
+    "prefix": "map.keys",
+    "body": [
+      "${1:map}.keys()"
+    ],
+    "description": "Get all keys from map as set"
+  },
+  "Map union": {
+    "prefix": "map.union",
+    "body": [
+      "${1:map1}.union(${2:map2})"
+    ],
+    "description": "Merge two maps"
+  },
+  "Set add": {
+    "prefix": "set.add",
+    "body": [
+      "${1:set}.add(${2:element})"
+    ],
+    "description": "Add element to set (returns new set)"
+  },
+  "Set contains": {
+    "prefix": "set.contains",
+    "body": [
+      "${1:set}.contains(${2:element})"
+    ],
+    "description": "Check if set contains element"
+  },
+  "Set union": {
+    "prefix": "set.union",
+    "body": [
+      "${1:set1}.union(${2:set2})"
+    ],
+    "description": "Union of two sets"
+  },
+  "Set diff": {
+    "prefix": "set.diff",
+    "body": [
+      "${1:set1}.diff(${2:set2})"
+    ],
+    "description": "Difference of two sets"
+  },
+  "URI Literal": {
+    "prefix": "uri",
+    "body": [
+      "\\`${1:rho:uri}\\`"
+    ],
+    "description": "URI literal"
+  },
+  "ByteArray Type": {
+    "prefix": "ByteArray",
+    "body": [
+      "ByteArray"
+    ],
+    "description": "ByteArray type annotation"
+  }
+}

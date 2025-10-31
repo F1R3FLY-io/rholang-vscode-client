@@ -9,13 +9,15 @@
         ["(", ")"]
     ],
     "autoClosingPairs": [
-        ["{", "}"],
-        ["[", "]"],
-        ["(", ")"],
-        ["\"", "\""],
-        ["'", "'"],
-        ["`", "`"]
+        { "open": "{", "close": "}" },
+        { "open": "[", "close": "]" },
+        { "open": "(", "close": ")" },
+        { "open": "\"", "close": "\"", "notIn": ["string"] },
+        { "open": "'", "close": "'", "notIn": ["string", "comment"] },
+        { "open": "`", "close": "`", "notIn": ["string", "comment"] },
+        { "open": "/**", "close": " */", "notIn": ["string"] }
     ],
+    "autoCloseBefore": ";:.,=}])>` \n\t",
     "surroundingPairs": [
         ["{", "}"],
         ["[", "]"],
@@ -23,5 +25,41 @@
         ["\"", "\""],
         ["'", "'"],
         ["`", "`"]
+    ],
+    "folding": {
+        "markers": {
+            "start": "^\\s*//\\s*#?region\\b",
+            "end": "^\\s*//\\s*#?endregion\\b"
+        },
+        "offSide": true
+    },
+    "wordPattern": "(-?\\d*\\.\\d\\w*)|([^\\`\\~\\!\\@\\#\\%\\^\\&\\*\\(\\)\\-\\=\\+\\[\\{\\]\\}\\\\\\|\\;\\:\\'\\\"\\,\\.\\<\\>\\/\\?\\s]+)",
+    "indentationRules": {
+        "increaseIndentPattern": "^((?!\\/\\/).)*(\\{[^}\"'`]*|\\([^)\"'`]*|\\[[^\\]\"'`]*)$",
+        "decreaseIndentPattern": "^((?!.*?\\/\\*).*\\*/)?\\s*[\\}\\]].*$"
+    },
+    "onEnterRules": [
+        {
+            "beforeText": "^\\s*\\/\\*\\*(?!\\/)([^\\*]|\\*(?!\\/))*$",
+            "afterText": "^\\s*\\*\\/$",
+            "action": { "indent": "indentOutdent", "appendText": " * " }
+        },
+        {
+            "beforeText": "^\\s*\\/\\*\\*(?!\\/)([^\\*]|\\*(?!\\/))*$",
+            "action": { "indent": "none", "appendText": " * " }
+        },
+        {
+            "beforeText": "^\\s*\\*\\s[^*]*$",
+            "previousLineText": "^(\\t|(\\ \\ ))*\\ \\*(\\ ([^\\*]|\\*(?!\\/))*)?$",
+            "action": { "indent": "none", "appendText": "* " }
+        },
+        {
+            "beforeText": "^\\s*\\*\\/$",
+            "action": { "indent": "none", "removeText": 1 }
+        },
+        {
+            "beforeText": "^\\s*\\*[^/]*\\*\\/\\s*$",
+            "action": { "indent": "none", "removeText": 1 }
+        }
     ]
 }
