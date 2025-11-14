@@ -2,7 +2,7 @@
     "name": "f1r3fly-io-rholang",
     "displayName": "Rholang (F1R3FLY.io)",
     "description": "Language support for Rholang.",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "publisher": "F1R3FLY-io",
     "icon": "images/f1r3fly-io-logo.png",
     "license": "Apache-2.0",

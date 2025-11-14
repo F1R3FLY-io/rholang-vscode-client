@@ -4,6 +4,17 @@ All notable changes to the "rholang" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [0.1.1] - 2025-01-14
+
+### Changed
+- **Validator Backend Configuration**: Extension now always passes `--validator-backend` flag explicitly to the language server
+  - Passes `--validator-backend rust` when using the Rust backend (embedded interpreter)
+  - Passes `--validator-backend grpc:HOST:PORT` when using the gRPC backend
+  - Simplifies configuration logic and makes backend selection explicit in command line
+- **Removed Automatic `--no-rnode` Fallback**: Extension no longer automatically passes `--no-rnode` flag
+  - Users can manually add `--no-rnode` via `rholang.server.extraArgs` if needed for parser-only validation
+  - Simplifies server startup logic and makes configuration more predictable
+
 ## [0.1.0] - 2025-01-29
 
 ### Added

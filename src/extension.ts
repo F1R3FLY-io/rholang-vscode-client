@@ -447,20 +447,17 @@ export async function activate(context: vscode.ExtensionContext) {
             logger.info('Wire logging enabled - LSP protocol messages will be logged');
         }
 
-        // Add validator backend configuration
-        // NOTE: We only pass --validator-backend when using gRPC AND RNode is available
-        if (validatorBackend === 'grpc' && rnodeAvailable) {
+        // Always pass validator backend explicitly
+        if (validatorBackend === 'grpc') {
             args.push("--validator-backend", `grpc:${grpcAddress}`);
             logger.info(`Starting language server with gRPC backend at ${grpcAddress}`);
-        } else if (validatorBackend === 'grpc' && !rnodeAvailable) {
-            // User wanted gRPC but RNode is not available - use --no-rnode for parser-only validation
-            args.push("--no-rnode");
-            logger.info('Starting language server with --no-rnode (parser-only validation)');
-        } else if (validatorBackend !== 'rust') {
-            logger.warn(`Unknown validator backend '${validatorBackend}', defaulting to 'rust'`);
+        } else if (validatorBackend === 'rust') {
+            args.push("--validator-backend", "rust");
+            logger.info('Starting language server with Rust backend');
         } else {
-            // validatorBackend === 'rust' - don't pass --validator-backend (use language server default)
-            logger.info('Starting language server with Rust backend (default)');
+            // Unknown backend - default to rust
+            logger.warn(`Unknown validator backend '${validatorBackend}', defaulting to 'rust'`);
+            args.push("--validator-backend", "rust");
         }
 
         // Add extra user-specified arguments at the end
